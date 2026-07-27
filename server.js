@@ -8,7 +8,9 @@ const Database = require('better-sqlite3');
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
 // ─── Database Setup ───────────────────────────────────────────────────────────
-const db = new Database(path.join(__dirname, 'data.db'));
+const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, 'data.db');
+const db = new Database(DB_PATH);
+console.log(`📦 Database path: ${DB_PATH}`);
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 

@@ -9,10 +9,15 @@
   <style>
     /* ─── CSS Variables ────────────────────────────────────────────── */
     :root {
+      /* ─── Glassmorphism (default) ──────────────────────────── */
       --glass-bg: rgba(255, 255, 255, 0.08);
       --glass-border: rgba(255, 255, 255, 0.18);
       --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       --glass-blur: 20px;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: 1px solid rgba(255, 255, 255, 0.18);
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      --card-blur: 20px;
       --text-primary: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.75);
       --text-muted: rgba(255, 255, 255, 0.45);
@@ -28,6 +33,14 @@
       --radius-xl: 36px;
       --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
       --font: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --bg-primary: #0a0a1a;
+      --bg-secondary: #0d0d22;
+      --neu-bg: #1a1a2e;
+      --neu-shadow-light: rgba(255,255,255,0.05);
+      --neu-shadow-dark: rgba(0,0,0,0.4);
+      --mat-bg: #1e1e2e;
+      --mat-surface: #2a2a3e;
+      --mat-elevation: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,10 +48,11 @@
     body {
       font-family: var(--font);
       min-height: 100vh;
-      background: #0a0a1a;
+      background: var(--bg-primary, #0a0a1a);
       color: var(--text-primary);
       overflow-x: hidden;
       position: relative;
+      transition: background 0.5s ease, color 0.5s ease;
     }
 
     /* ─── Animated Background ──────────────────────────────────────── */
@@ -108,11 +122,11 @@
 
     /* ─── Glass Utilities ──────────────────────────────────────────── */
     .glass, .glass-sm, .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
+      background: var(--card-bg);
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+      border: var(--card-border);
+      box-shadow: var(--card-shadow);
     }
     .glass { border-radius: var(--radius-lg); }
     .glass-sm { border-radius: var(--radius-md); }
@@ -121,6 +135,286 @@
       transform: translateY(-3px);
       box-shadow: 0 12px 40px rgba(0,0,0,0.25);
       border-color: rgba(255,255,255,0.25);
+    }
+
+    /* ─── Neumorphism Theme ──────────────────────────────────────────── */
+    body.theme-neu {
+      --bg-primary: #1a1a2e;
+      --text-primary: #e0e0e0;
+      --text-secondary: rgba(255,255,255,0.65);
+      --text-muted: rgba(255,255,255,0.4);
+      --card-bg: #1e1e32;
+      --card-border: none;
+      --card-blur: 0px;
+      --card-shadow: 8px 8px 16px rgba(0,0,0,0.4), -8px -8px 16px rgba(255,255,255,0.04);
+      --neu-bg: #1e1e32;
+    }
+    body.theme-neu .btn-primary {
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.4), -6px -6px 12px rgba(255,255,255,0.04);
+      background: linear-gradient(145deg, #5a5df0, #7275f5);
+    }
+    body.theme-neu .btn-primary:hover {
+      box-shadow: 4px 4px 8px rgba(0,0,0,0.4), -4px -4px 8px rgba(255,255,255,0.04);
+      transform: translateY(-1px);
+    }
+    body.theme-neu .form-group input {
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.3), inset -4px -4px 8px rgba(255,255,255,0.03);
+      background: var(--neu-bg);
+      border: none;
+    }
+    body.theme-neu .auth-card::before { display: none; }
+    body.theme-neu .icon-picker button { box-shadow: 3px 3px 6px rgba(0,0,0,0.3), -3px -3px 6px rgba(255,255,255,0.03); }
+    body.theme-neu .color-picker button { box-shadow: 3px 3px 6px rgba(0,0,0,0.3), -3px -3px 6px rgba(255,255,255,0.03); }
+    body.theme-neu .avatar { box-shadow: 3px 3px 6px rgba(0,0,0,0.3), -3px -3px 6px rgba(255,255,255,0.03); }
+    body.theme-neu .bg-layer { opacity: 0.3; }
+    body.theme-neu .logout-btn { box-shadow: 3px 3px 6px rgba(0,0,0,0.3), -3px -3px 6px rgba(255,255,255,0.03); }
+    body.theme-neu .btn-ghost {
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.3), -3px -3px 6px rgba(255,255,255,0.03);
+      border: none;
+    }
+
+    /* ─── Material Design Theme ──────────────────────────────────────── */
+    body.theme-mat {
+      --bg-primary: #1e1e2e;
+      --bg-secondary: #181825;
+      --text-primary: #cdd6f4;
+      --text-secondary: rgba(205, 214, 244, 0.7);
+      --text-muted: rgba(205, 214, 244, 0.4);
+      --card-bg: #2a2a3e;
+      --card-border: none;
+      --card-blur: 0px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      --accent: #89b4fa;
+      --accent-hover: #b4d0fb;
+      --accent-glow: rgba(137, 180, 250, 0.3);
+    }
+    body.theme-mat .btn-primary {
+      border-radius: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    body.theme-mat .form-group input {
+      border-radius: 28px;
+      background: rgba(255,255,255,0.04);
+      border: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+    body.theme-mat .form-group input:focus {
+      border-bottom-color: var(--accent);
+      border-radius: 28px 28px 0 0;
+    }
+    body.theme-mat .auth-card::before { display: none; }
+    body.theme-mat .glass, body.theme-mat .glass-sm, body.theme-mat .glass-card {
+      border-radius: 28px;
+    }
+    body.theme-mat .avatar { border-radius: 50%; border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    body.theme-mat .bg-layer { opacity: 0.2; }
+    body.theme-mat .btn-ghost { border-radius: 28px; }
+    body.theme-mat .logout-btn { border-radius: 20px; }
+    body.theme-mat .streak-badge { border-radius: 20px; }
+
+    /* ─── Loading Animation ──────────────────────────────────────────── */
+    .loader-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      background: #0a0a1a;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .loader-overlay.hidden { opacity: 0; visibility: hidden; }
+    .loader-overlay .logo-anim {
+      font-size: 64px;
+      animation: logoBounce 1.2s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes logoBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      25% { transform: translateY(-20px) scale(1.1); }
+      50% { transform: translateY(0) scale(1); }
+      75% { transform: translateY(-10px) scale(1.05); }
+    }
+    .loader-overlay .loader-title {
+      font-size: 28px; font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #f472b6, #22d3ee);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: pulseText 2s ease-in-out infinite;
+    }
+    @keyframes pulseText {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
+    }
+    .loader-overlay .loader-sub {
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+      margin-top: 6px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .loader-ring {
+      position: relative;
+      width: 120px; height: 120px;
+      margin: 20px auto;
+    }
+    .loader-ring div {
+      position: absolute;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      animation: ringSpin 1.5s linear infinite;
+    }
+    .loader-ring div:nth-child(1) {
+      border-top-color: #6366f1;
+      animation-duration: 1.5s;
+    }
+    .loader-ring div:nth-child(2) {
+      inset: 8px;
+      border-right-color: #ec4899;
+      animation-duration: 1.2s;
+      animation-direction: reverse;
+    }
+    .loader-ring div:nth-child(3) {
+      inset: 16px;
+      border-bottom-color: #22d3ee;
+      animation-duration: 1.8s;
+    }
+    @keyframes ringSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ─── Admin Badge ────────────────────────────────────────────────── */
+    .admin-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+      border: 1px solid rgba(245,158,11,0.25);
+      padding: 6px 12px; border-radius: 20px;
+      font-size: 11px; color: #f59e0b;
+      margin-bottom: 12px; cursor: default;
+    }
+    .admin-badge .creds {
+      font-family: monospace;
+      background: rgba(0,0,0,0.3);
+      padding: 1px 6px; border-radius: 4px;
+      font-size: 11px;
+      color: #fbbf24;
+    }
+
+    /* ─── Forgot Password ────────────────────────────────────────────── */
+    .forgot-link { font-size: 12px; color: var(--text-muted); cursor: pointer; text-align: right; margin-top: 2px; display: block; }
+    .forgot-link:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    /* ─── Settings Modal ─────────────────────────────────────────────── */
+    .theme-options {
+      display: flex; flex-direction: column; gap: 8px;
+      margin: 12px 0 16px;
+    }
+    .theme-opt {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border: 2px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .theme-opt:hover { background: rgba(255,255,255,0.05); }
+    .theme-opt.active {
+      border-color: var(--accent);
+      background: rgba(99,102,241,0.08);
+    }
+    .theme-opt .t-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .theme-opt .t-info { flex: 1; }
+    .theme-opt .t-name { font-size: 15px; font-weight: 500; }
+    .theme-opt .t-desc { font-size: 12px; color: var(--text-muted); }
+    .theme-opt .t-check { font-size: 14px; opacity: 0; transition: var(--transition); }
+    .theme-opt.active .t-check { opacity: 1; }
+
+    /* ─── Charts Explosion Page ──────────────────────────────────────── */
+    .charts-page {
+      display: none;
+      position: relative; z-index: 2;
+      min-height: 100vh; padding: 24px;
+    }
+    .charts-page.active { display: block; }
+    .charts-page .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-secondary);
+      cursor: pointer; font-size: 13px;
+      transition: var(--transition);
+      margin-bottom: 16px;
+    }
+    .charts-page .back-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .charts-page h2 {
+      font-size: 28px; font-weight: 800;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, #a78bfa, #f472b6, #22d3ee);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .charts-page .ch-sub {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .charts-grid .full-w { grid-column: span 2; }
+    .ch-card {
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ch-card h4 {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .ch-card .ch-wrap {
+      position: relative; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ch-card .ch-wrap canvas {
+      max-height: 240px; max-width: 100%;
+    }
+    .ch-card .ch-stats {
+      display: flex; gap: 12px; justify-content: center;
+      margin-top: 8px;
+    }
+    .ch-card .ch-stat {
+      text-align: center;
+    }
+    .ch-card .ch-stat .val {
+      font-size: 20px; font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ch-card .ch-stat .lbl {
+      font-size: 10px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 720px) {
+      .charts-grid { grid-template-columns: 1fr; }
+      .charts-grid .full-w { grid-column: span 1; }
     }
 
     /* ─── Auth Page ────────────────────────────────────────────────── */
@@ -603,6 +897,16 @@
   <canvas id="particleCanvas"></canvas>
   <canvas id="confettiCanvas" style="position:fixed;inset:0;z-index:3;pointer-events:none;"></canvas>
 
+  <!-- Loading Animation -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="logo-anim">🌊</div>
+    <div class="loader-ring">
+      <div></div><div></div><div></div>
+    </div>
+    <div class="loader-title">Habit Flow</div>
+    <div class="loader-sub">Building better habits...</div>
+  </div>
+
   <!-- Toast -->
   <div class="toast-container" id="toastC"></div>
 
@@ -615,6 +919,11 @@
         <p>Build better habits, one day at a time</p>
       </div>
 
+      <!-- Admin Credentials Badge -->
+      <div class="admin-badge" id="adminBadge" style="display:none">
+        🔑 Admin: <span class="creds" id="adminCreds">admin@habitflow.com / Admin@123</span>
+      </div>
+
       <!-- Login -->
       <div id="loginForm">
         <div class="form-group">
@@ -624,6 +933,7 @@
         <div class="form-group">
           <label>Password</label>
           <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+          <span class="forgot-link" onclick="showForgot()">Forgot password?</span>
         </div>
         <div class="error-msg" id="loginError"></div>
         <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">
@@ -632,6 +942,31 @@
         </button>
         <div class="auth-footer">
           Don't have an account? <a onclick="showReg()">Create one</a>
+        </div>
+      </div>
+
+      <!-- Forgot Password -->
+      <div id="forgotForm" style="display:none">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="forgotEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group" id="resetGroup" style="display:none">
+          <label>New Password</label>
+          <input type="password" id="resetPass" placeholder="•••••••• (min 6 chars)">
+        </div>
+        <div class="error-msg" id="forgotError"></div>
+        <div class="error-msg" id="forgotSuccess" style="color:var(--success);opacity:1"></div>
+        <button class="btn btn-primary" id="forgotBtn" onclick="handleForgot()">
+          <span id="forgotBtnTxt">Send Reset Link</span>
+          <div class="spinner" id="forgotSpin" style="display:none"></div>
+        </button>
+        <button class="btn btn-primary" id="resetBtn" style="display:none" onclick="handleReset()">
+          <span id="resetBtnTxt">Reset Password</span>
+          <div class="spinner" id="resetSpin" style="display:none"></div>
+        </button>
+        <div class="auth-footer">
+          Remember your password? <a onclick="showLogin()">Sign in</a>
         </div>
       </div>
 
@@ -669,6 +1004,9 @@
       <div class="right">
         <span class="uname" id="dispUser">Welcome!</span>
         <div class="avatar" id="userAv">U</div>
+        <button class="logout-btn" onclick="openChartsPage()" title="Crazy Charts 🌟" style="font-size:18px;padding:7px 12px;">📊</button>
+        <button class="logout-btn" onclick="openAdminPage()" title="Admin Panel" id="adminBtn" style="font-size:18px;padding:7px 12px;display:none;">🛡️</button>
+        <button class="logout-btn" onclick="openSettingsModal()" title="Theme Settings" style="font-size:18px;padding:7px 12px;">⚙️</button>
         <button class="logout-btn" onclick="handleLogout()">✕ Sign Out</button>
       </div>
     </div>
@@ -772,6 +1110,57 @@
     </div>
   </div>
 
+  <!-- ─── Settings Modal ──────────────────────────────────────────── -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="glass modal" style="max-width:420px">
+      <h3>🎨 Theme Settings</h3>
+      <p style="color:var(--text-secondary);font-size:14px;margin-bottom:14px">Choose your preferred visual style</p>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-opt active" data-theme="glass" onclick="selectTheme('glass')">
+          <div class="t-icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(255,255,255,0.05));border:1px solid rgba(255,255,255,0.15);border-radius:10px;">🪟</div>
+          <div class="t-info">
+            <div class="t-name">Glassmorphism</div>
+            <div class="t-desc">Frosted glass with blur and transparency</div>
+          </div>
+          <div class="t-check">✓</div>
+        </div>
+        <div class="theme-opt" data-theme="neu" onclick="selectTheme('neu')">
+          <div class="t-icon" style="background:#1e1e32;box-shadow:inset 3px 3px 6px rgba(0,0,0,0.3),inset -3px -3px 6px rgba(255,255,255,0.03);border-radius:10px;">🔘</div>
+          <div class="t-info">
+            <div class="t-name">Neumorphism</div>
+            <div class="t-desc">Soft extruded shapes with inner shadows</div>
+          </div>
+          <div class="t-check">✓</div>
+        </div>
+        <div class="theme-opt" data-theme="mat" onclick="selectTheme('mat')">
+          <div class="t-icon" style="background:linear-gradient(135deg,#2a2a3e,#1e1e2e);border-radius:10px;">📐</div>
+          <div class="t-info">
+            <div class="t-name">Material Design</div>
+            <div class="t-desc">Clean surfaces with elevation shadows</div>
+          </div>
+          <div class="t-check">✓</div>
+        </div>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.5px;">🎨 Accent Color</h4>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;" id="accentColorPicker">
+        <button data-accent="#6366f1" style="width:32px;height:32px;border-radius:50%;background:#6366f1;border:3px solid transparent;cursor:pointer;transition:var(--transition);" class="acc-sel"></button>
+        <button data-accent="#ec4899" style="width:32px;height:32px;border-radius:50%;background:#ec4899;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#22c55e" style="width:32px;height:32px;border-radius:50%;background:#22c55e;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#f59e0b" style="width:32px;height:32px;border-radius:50%;background:#f59e0b;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#ef4444" style="width:32px;height:32px;border-radius:50%;background:#ef4444;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#06b6d4" style="width:32px;height:32px;border-radius:50%;background:#06b6d4;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#8b5cf6" style="width:32px;height:32px;border-radius:50%;background:#8b5cf6;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#f97316" style="width:32px;height:32px;border-radius:50%;background:#f97316;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#14b8a6" style="width:32px;height:32px;border-radius:50%;background:#14b8a6;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+        <button data-accent="#e11d48" style="width:32px;height:32px;border-radius:50%;background:#e11d48;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
+      </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="closeModal('settingsModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ─── Track Modal ──────────────────────────────────────────────── -->
   <div class="modal-overlay" id="trackModal">
     <div class="glass modal" style="max-width:380px">
@@ -786,6 +1175,152 @@
       <div class="btn-row">
         <button class="btn btn-ghost" onclick="closeModal('trackModal')">Cancel</button>
         <button class="btn btn-primary" id="toggleTrackBtn" onclick="toggleTrack()">✓ Mark Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ CHARTS PAGE ════════════════════ -->
+  <div class="charts-page" id="chartsPage">
+    <div style="position:relative;z-index:2">
+      <button class="back-btn" onclick="closeChartsPage()">← Back to Dashboard</button>
+      <h2>📊 Charts Explosion</h2>
+      <p class="ch-sub">Animated visualizations of your habit data — watch the numbers dance!</p>
+      <div class="charts-grid">
+        <div class="ch-card glass-sm">
+          <h4>🎯 Radar — Habit Balance</h4>
+          <div class="ch-wrap"><canvas id="radarChart"></canvas></div>
+        </div>
+        <div class="ch-card glass-sm">
+          <h4>📈 Polar — Streak Power</h4>
+          <div class="ch-wrap"><canvas id="polarChart"></canvas></div>
+        </div>
+        <div class="ch-card glass-sm full-w">
+          <h4>🌊 Wave — Daily Consistency</h4>
+          <div class="ch-wrap"><canvas id="waveChart" style="height:200px"></canvas></div>
+          <div class="ch-stats" id="waveStats">
+            <div class="ch-stat"><div class="val" id="wBest">0</div><div class="lbl">Best Day</div></div>
+            <div class="ch-stat"><div class="val" id="wAvg">0</div><div class="lbl">Avg/Day</div></div>
+            <div class="ch-stat"><div class="val" id="wTotal">0</div><div class="lbl">Total</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ ADMIN PAGE ════════════════════ -->
+  <style>
+    .admin-page {
+      display: none;
+      position: relative; z-index: 2;
+      min-height: 100vh; padding: 24px;
+    }
+    .admin-page.active { display: block; }
+    .admin-page h2 {
+      font-size: 28px; font-weight: 800;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .admin-page .ad-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .ad-stat {
+      padding: 16px; text-align: center;
+    }
+    .ad-stat .num {
+      font-size: 28px; font-weight: 700;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ad-stat .lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .admin-table-wrap {
+      overflow-x: auto;
+    }
+    .admin-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+    .admin-table th {
+      text-align: left; padding: 10px 12px;
+      color: var(--text-secondary);
+      font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .admin-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--text-primary);
+    }
+    .admin-table .badge {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 10px; font-size: 10px;
+      font-weight: 600; text-transform: uppercase;
+    }
+    .admin-table .badge.admin {
+      background: rgba(245,158,11,0.15); color: #f59e0b;
+    }
+    .admin-table .badge.user {
+      background: rgba(99,102,241,0.12); color: #818cf8;
+    }
+    .admin-table .badge.locked {
+      background: rgba(239,68,68,0.12); color: #ef4444;
+    }
+    .admin-table .ad-btn {
+      padding: 4px 10px; border: none; border-radius: 6px;
+      cursor: pointer; font-size: 11px; font-weight: 500;
+      transition: var(--transition);
+    }
+    .admin-table .ad-btn.del { background: rgba(239,68,68,0.12); color: #ef4444; }
+    .admin-table .ad-btn.del:hover { background: rgba(239,68,68,0.25); }
+    .admin-table .ad-btn.unlock { background: rgba(34,197,94,0.12); color: #22c55e; }
+    .admin-table .ad-btn.unlock:hover { background: rgba(34,197,94,0.25); }
+    .admin-table .ad-btn.pw { background: rgba(99,102,241,0.12); color: #818cf8; }
+    .admin-table .ad-btn.pw:hover { background: rgba(99,102,241,0.25); }
+    @media (max-width: 720px) {
+      .admin-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+  <div class="admin-page" id="adminPage">
+    <div style="position:relative;z-index:2">
+      <button class="back-btn" onclick="closeAdminPage()">← Back to Dashboard</button>
+      <h2>🛡️ Admin Panel</h2>
+      <p class="ad-sub" id="adminStatsText">User management & system control</p>
+      <div class="admin-grid" id="adminGrid"></div>
+      <div class="glass-sm" style="padding:20px;">
+        <h4 style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">👥 Registered Users</h4>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminUsersTable">
+            <thead>
+              <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="adminUsersBody">
+              <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:30px;">Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Change Password Modal -->
+  <div class="modal-overlay" id="adminPwModal">
+    <div class="glass modal" style="max-width:380px">
+      <h3 id="adminPwTitle">🔑 Change Password</h3>
+      <p style="color:var(--text-secondary);font-size:14px;margin-bottom:14px" id="adminPwUser"></p>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" id="adminNewPw" placeholder="•••••••• (min 6 chars)">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="closeModal('adminPwModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="adminChangePw()">Update</button>
       </div>
     </div>
   </div>
@@ -982,6 +1517,8 @@
     let trackCtx = { hid: null, date: null, tracked: false };
 
     let pieChartInst = null, barChartInst = null, doughnutInst = null;
+    let radarChartInst = null, polarChartInst = null, waveChartInst = null;
+    let resetToken = null; // For password reset flow
 
     // ═════════════════════════════════════════════════════════════════
     //  QUOTE OF THE DAY
@@ -1047,7 +1584,18 @@
           body: JSON.stringify({ email, password: pass })
         });
         const d = await r.json();
-        if (!r.ok) throw new Error(d.error);
+        if (!r.ok) {
+          if (d.locked) {
+            const mins = d.remaining_minutes || 5;
+            showErr('loginError', '🔒 ' + d.error);
+            toast('Account locked for ' + mins + ' min(s). Check your email to reset.', 'error');
+          } else if (d.attempts_remaining !== undefined) {
+            showErr('loginError', d.error + ' ⚠️');
+          } else {
+            throw new Error(d.error);
+          }
+          return;
+        }
         token = d.token; user = d.user;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
@@ -1073,6 +1621,8 @@
         const d = await r.json();
         if (!r.ok) throw new Error(d.error);
         token = d.token; user = d.user;
+        // Ensure is_admin is stored
+        if (user && user.is_admin === undefined) user.is_admin = false;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
         toast('Account created! 🎉', 'success');
@@ -1103,6 +1653,14 @@
       if (stored) user = JSON.parse(stored);
       document.getElementById('dispUser').textContent = `Hello, ${user.username}!`;
       document.getElementById('userAv').textContent = user.username.charAt(0).toUpperCase();
+
+      // Show admin button if user is admin
+      const adminBtn = document.getElementById('adminBtn');
+      if (user && user.is_admin) {
+        adminBtn.style.display = 'inline-block';
+      } else {
+        adminBtn.style.display = 'none';
+      }
 
       // Greeting-based emoji
       const h = new Date().getHours();
@@ -1493,6 +2051,409 @@
       } catch (e) { toast('Failed to delete', 'error'); }
     }
 
+    // ═════════════════════════════════════════════════════════════════
+    //  ADMIN PANEL
+    // ═════════════════════════════════════════════════════════════════
+    let adminDeleteTarget = null;
+    let adminPwTarget = null;
+
+    function openAdminPage() {
+      if (!token || !user || !user.is_admin) return toast('Admin access required', 'error');
+      document.getElementById('dash').classList.remove('active');
+      document.getElementById('chartsPage').classList.remove('active');
+      document.getElementById('adminPage').classList.add('active');
+      renderAdminPage();
+    }
+
+    function closeAdminPage() {
+      document.getElementById('adminPage').classList.remove('active');
+      document.getElementById('dash').classList.add('active');
+    }
+
+    async function renderAdminPage() {
+      try {
+        const r = await fetch(API + '/admin/users', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!r.ok) { toast('Failed to load users', 'error'); return; }
+        const users = await r.json();
+
+        // Stats grid
+        const total = users.length;
+        const admins = users.filter(u => u.is_admin).length;
+        const locked = users.filter(u => u.is_locked).length;
+        const regular = total - admins;
+        document.getElementById('adminGrid').innerHTML = `
+          <div class="ad-stat glass-sm"><div class="num">${total}</div><div class="lbl">Total Users</div></div>
+          <div class="ad-stat glass-sm"><div class="num">${regular}</div><div class="lbl">Regular</div></div>
+          <div class="ad-stat glass-sm"><div class="num">${admins}</div><div class="lbl">Admins</div></div>
+          <div class="ad-stat glass-sm"><div class="num" style="${locked > 0 ? 'color:#ef4444;-webkit-text-fill-color:#ef4444' : ''}">${locked}</div><div class="lbl">🔒 Locked</div></div>
+        `;
+
+        // Users table
+        const tbody = document.getElementById('adminUsersBody');
+        if (users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:30px;">No users found</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = users.map(u => {
+          const created = new Date(u.created_at + 'Z').toLocaleDateString();
+          const roleBadge = u.is_admin ? '<span class="badge admin">Admin</span>' : '<span class="badge user">User</span>';
+          const statusBadge = u.is_locked ? '<span class="badge locked">🔒 Locked</span>' : '<span class="badge user" style="background:rgba(34,197,94,0.12);color:#22c55e;">✅ Active</span>';
+          const isSelf = u.id === user.id;
+          return `
+            <tr>
+              <td>${u.id}</td>
+              <td><strong>${u.username}</strong>${isSelf ? ' <span style="color:var(--text-muted);font-size:10px;">(you)</span>' : ''}</td>
+              <td style="color:var(--text-secondary)">${u.email}</td>
+              <td>${roleBadge}</td>
+              <td>${statusBadge}</td>
+              <td style="color:var(--text-muted);font-size:12px;">${created}</td>
+              <td>
+                ${!isSelf ? `
+                  <button class="ad-btn pw" onclick="adminOpenPw(${u.id},'${u.username}')" title="Change Password">🔑</button>
+                  ${u.is_locked ? `<button class="ad-btn unlock" onclick="adminUnlockUser(${u.id})" title="Unlock">🔓</button>` : ''}
+                  <button class="ad-btn del" onclick="adminDeleteUser(${u.id},'${u.username}')" title="Delete">🗑️</button>
+                ` : '<span style="color:var(--text-muted);font-size:11px;">—</span>'}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) { toast('Admin page error', 'error'); }
+    }
+
+    function adminOpenPw(id, username) {
+      adminPwTarget = id;
+      document.getElementById('adminPwTitle').textContent = '🔑 Change Password';
+      document.getElementById('adminPwUser').textContent = 'User: ' + username;
+      document.getElementById('adminNewPw').value = '';
+      openModal('adminPwModal');
+    }
+
+    async function adminChangePw() {
+      const newPw = document.getElementById('adminNewPw').value;
+      if (!newPw || newPw.length < 6) return toast('Password must be 6+ characters', 'error');
+      try {
+        const r = await fetch(API + '/admin/users/' + adminPwTarget + '/password', {
+          method: 'PUT',
+          headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newPassword: newPw })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        toast(d.message, 'success');
+        closeModal('adminPwModal');
+      } catch (e) { toast(e.message, 'error'); }
+    }
+
+    async function adminUnlockUser(id) {
+      try {
+        const r = await fetch(API + '/admin/users/' + id + '/unlock', {
+          method: 'PUT',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        toast(d.message, 'success');
+        renderAdminPage();
+      } catch (e) { toast(e.message, 'error'); }
+    }
+
+    async function adminDeleteUser(id, username) {
+      if (!confirm('Delete user "' + username + '"? All their habits and data will be permanently deleted.')) return;
+      try {
+        const r = await fetch(API + '/admin/users/' + id, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        toast(d.message, 'success');
+        renderAdminPage();
+      } catch (e) { toast(e.message, 'error'); }
+    }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  ADMIN CREDENTIALS
+    // ═════════════════════════════════════════════════════════════════
+    // Admin account is seeded on server: admin@habitflow.com / Admin@123
+    function showAdminBadge() {
+      const badge = document.getElementById('adminBadge');
+      badge.style.display = 'flex';
+      badge.style.animation = 'slideUp 0.5s ease-out';
+    }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  FORGOT PASSWORD
+    // ═════════════════════════════════════════════════════════════════
+    function showForgot() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('regForm').style.display = 'none';
+      document.getElementById('forgotForm').style.display = 'block';
+      document.getElementById('forgotError').classList.remove('visible');
+      document.getElementById('forgotSuccess').style.display = 'none';
+      document.getElementById('forgotBtn').style.display = 'block';
+      document.getElementById('resetBtn').style.display = 'none';
+      document.getElementById('resetGroup').style.display = 'none';
+      resetToken = null;
+    }
+
+    async function handleForgot() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      if (!email) return showErr('forgotError', 'Enter your email');
+      document.getElementById('forgotError').classList.remove('visible');
+      setLoad('forgotBtn', 'forgotBtnTxt', 'forgotSpin', true);
+      try {
+        const r = await fetch(API + '/auth/forgot-password', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+
+        const successEl = document.getElementById('forgotSuccess');
+        successEl.textContent = '✓ Reset link generated!';
+        successEl.style.display = 'block';
+
+        if (d.token) {
+          resetToken = d.token;
+          document.getElementById('forgotBtn').style.display = 'none';
+          document.getElementById('resetGroup').style.display = 'block';
+          document.getElementById('resetBtn').style.display = 'block';
+          successEl.textContent = '✓ Token received! Enter your new password.';
+        }
+      } catch (e) {
+        showErr('forgotError', e.message);
+      }
+      setLoad('forgotBtn', 'forgotBtnTxt', 'forgotSpin', false);
+    }
+
+    async function handleReset() {
+      const newPassword = document.getElementById('resetPass').value;
+      if (!newPassword || newPassword.length < 6)
+        return showErr('forgotError', 'Password must be 6+ characters');
+      document.getElementById('forgotError').classList.remove('visible');
+      setLoad('resetBtn', 'resetBtnTxt', 'resetSpin', true);
+      try {
+        const r = await fetch(API + '/auth/reset-password', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: resetToken, newPassword })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        document.getElementById('forgotSuccess').textContent = '✓ ' + d.message;
+        toast('Password reset! Sign in with your new password.', 'success');
+        setTimeout(() => showLogin(), 1500);
+      } catch (e) {
+        showErr('forgotError', e.message);
+      }
+      setLoad('resetBtn', 'resetBtnTxt', 'resetSpin', false);
+    }
+
+    // Override showLogin to hide forgot form
+    const _origShowLogin = showLogin;
+    showLogin = function() {
+      document.getElementById('forgotForm').style.display = 'none';
+      _origShowLogin();
+    };
+
+    // ═════════════════════════════════════════════════════════════════
+    //  THEME SWITCHER
+    // ═════════════════════════════════════════════════════════════════
+    function getTheme() { return localStorage.getItem('theme') || 'glass'; }
+
+    function applyTheme(theme) {
+      document.body.classList.remove('theme-neu', 'theme-mat', 'theme-glass');
+      if (theme !== 'glass') document.body.classList.add('theme-' + theme);
+      localStorage.setItem('theme', theme);
+      document.querySelectorAll('.theme-opt').forEach(el => {
+        el.classList.toggle('active', el.dataset.theme === theme);
+      });
+    }
+
+    function selectTheme(theme) {
+      applyTheme(theme);
+      toast('Theme changed to ' + theme.charAt(0).toUpperCase() + theme.slice(1), 'info');
+    }
+
+    function openSettingsModal() { openModal('settingsModal'); }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  CHARTS PAGE
+    // ═════════════════════════════════════════════════════════════════
+    let chartsPageOpen = false;
+
+    function openChartsPage() {
+      if (!token) return toast('Please sign in first', 'error');
+      chartsPageOpen = true;
+      document.getElementById('dash').classList.remove('active');
+      document.getElementById('chartsPage').classList.add('active');
+      renderChartsPage();
+    }
+
+    function closeChartsPage() {
+      chartsPageOpen = false;
+      document.getElementById('chartsPage').classList.remove('active');
+      document.getElementById('dash').classList.add('active');
+      // Destroy chart instances
+      if (radarChartInst) { radarChartInst.destroy(); radarChartInst = null; }
+      if (polarChartInst) { polarChartInst.destroy(); polarChartInst = null; }
+      if (waveChartInst) { waveChartInst.destroy(); waveChartInst = null; }
+    }
+
+    async function renderChartsPage() {
+      try {
+        const [sRes, tRes] = await Promise.all([
+          fetch(API + '/stats', { headers: { 'Authorization': 'Bearer ' + token } }),
+          fetch(API + '/tracks/range?start=' + cYear + '-01-01&end=' + cYear + '-12-31', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          })
+        ]);
+        const stats = await sRes.json();
+        const tracks = await tRes.json();
+
+        if (radarChartInst) radarChartInst.destroy();
+        if (polarChartInst) polarChartInst.destroy();
+        if (waveChartInst) waveChartInst.destroy();
+
+        // Radar — Habit Balance
+        if (stats.length > 0) {
+          const rCtx = document.getElementById('radarChart').getContext('2d');
+          const labels = stats.map(h => h.name || 'Habit');
+          const data = stats.map(h => h.totalTracks);
+          const colors = stats.map(h => h.color || '#6366f1');
+
+          radarChartInst = new Chart(rCtx, {
+            type: 'radar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Total Check-ins',
+                data: data,
+                backgroundColor: 'rgba(99,102,241,0.15)',
+                borderColor: '#6366f1',
+                borderWidth: 2,
+                pointBackgroundColor: colors,
+                pointBorderColor: '#fff',
+                pointRadius: 5,
+                pointHoverRadius: 8
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: true,
+              animation: { duration: 1500 },
+              plugins: { legend: { display: false } },
+              scales: {
+                r: {
+                  beginAtZero: true,
+                  ticks: { color: 'rgba(255,255,255,0.3)', backdropColor: 'transparent' },
+                  grid: { color: 'rgba(255,255,255,0.06)' },
+                  angleLines: { color: 'rgba(255,255,255,0.06)' },
+                  pointLabels: { color: 'rgba(255,255,255,0.6)', font: { size: 11 } }
+                }
+              }
+            }
+          });
+
+          // Polar — Streak Power
+          const pCtx = document.getElementById('polarChart').getContext('2d');
+          polarChartInst = new Chart(pCtx, {
+            type: 'polarArea',
+            data: {
+              labels: labels,
+              datasets: [{
+                data: stats.map(h => h.currentStreak + 1),
+                backgroundColor: colors.map(c => c + '80'),
+                borderColor: colors,
+                borderWidth: 2
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: true,
+              animation: { duration: 2000 },
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => ctx.label + ': ' + (ctx.raw - 1) + ' day streak'
+                  }
+                }
+              },
+              scales: {
+                r: {
+                  ticks: { display: false },
+                  grid: { color: 'rgba(255,255,255,0.06)' }
+                }
+              }
+            }
+          });
+        }
+
+        // Wave — Daily Consistency (line chart)
+        const wCtx = document.getElementById('waveChart').getContext('2d');
+        // Build daily counts for current month
+        const now = new Date();
+        const daysInMonth = new Date(cYear, cMonth + 1, 0).getDate();
+        const daysArr = [];
+        for (let d = 1; d <= daysInMonth; d++) {
+          const ds = cYear + '-' + String(cMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+          const count = tracks.filter(t => t.date === ds).length;
+          daysArr.push(count);
+        }
+
+        const maxVal = Math.max(...daysArr, 1);
+        const total = daysArr.reduce((s, v) => s + v, 0);
+        const avg = (total / daysInMonth).toFixed(1);
+
+        document.getElementById('wBest').textContent = maxVal;
+        document.getElementById('wAvg').textContent = avg;
+        document.getElementById('wTotal').textContent = total;
+
+        waveChartInst = new Chart(wCtx, {
+          type: 'line',
+          data: {
+            labels: Array.from({length: daysInMonth}, (_, i) => i + 1),
+            datasets: [{
+              label: 'Check-ins',
+              data: daysArr,
+              fill: true,
+              backgroundColor: (ctx) => {
+                const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 240);
+                g.addColorStop(0, 'rgba(99,102,241,0.35)');
+                g.addColorStop(1, 'rgba(99,102,241,0)');
+                return g;
+              },
+              borderColor: '#6366f1',
+              borderWidth: 2,
+              tension: 0.4,
+              pointBackgroundColor: '#6366f1',
+              pointBorderColor: '#fff',
+              pointRadius: 3,
+              pointHoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 1800, easing: 'easeInOutQuart' },
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1, color: 'rgba(255,255,255,0.3)' },
+                grid: { color: 'rgba(255,255,255,0.04)' }
+              },
+              x: {
+                ticks: { color: 'rgba(255,255,255,0.3)', maxTicksLimit: 10 },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+
+      } catch (e) { toast('Failed to load charts', 'error'); }
+    }
+
     // ─── Modal ─────────────────────────────────────────────────────
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
@@ -1501,7 +2462,21 @@
     //  INIT
     // ═════════════════════════════════════════════════════════════════
     document.addEventListener('DOMContentLoaded', () => {
-      initParticles();
+      // ── Loading Animation ──
+      const loader = document.getElementById('loaderOverlay');
+      // Show loading for at least 2s, max until page is interactive
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        initParticles();
+      }, 2500);
+
+      // ── Apply Saved Theme ──
+      const savedTheme = getTheme();
+      applyTheme(savedTheme);
+
+      // ── Admin Badge ──
+      // Show admin badge on login page with credentials hint
+      setTimeout(() => showAdminBadge(), 2700);
 
       // Icon/Color picker
       document.getElementById('iconPicker').addEventListener('click', e => {
@@ -1519,6 +2494,39 @@
         }
       });
 
+      // Helper: hex to rgba
+      function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+
+      // Accent color picker
+      document.getElementById('accentColorPicker').addEventListener('click', e => {
+        if (e.target.tagName === 'BUTTON' && e.target.dataset.accent) {
+          const color = e.target.dataset.accent;
+          document.body.style.setProperty('--accent', color);
+          document.body.style.setProperty('--accent-hover', hexToRgba(color, 0.8));
+          document.body.style.setProperty('--accent-glow', hexToRgba(color, 0.35));
+          localStorage.setItem('accentColor', color);
+          document.querySelectorAll('#accentColorPicker button').forEach(b => b.style.borderColor = 'transparent');
+          e.target.style.borderColor = '#fff';
+          toast('Accent color updated! ✨', 'info');
+        }
+      });
+
+      // Load saved accent color
+      const savedAccent = localStorage.getItem('accentColor');
+      if (savedAccent) {
+        document.body.style.setProperty('--accent', savedAccent);
+        document.body.style.setProperty('--accent-hover', hexToRgba(savedAccent, 0.8));
+        document.body.style.setProperty('--accent-glow', hexToRgba(savedAccent, 0.35));
+        document.querySelectorAll('#accentColorPicker button').forEach(b => {
+          if (b.dataset.accent === savedAccent) b.style.borderColor = '#fff';
+        });
+      }
+
       // Modal overlay close
       document.querySelectorAll('.modal-overlay').forEach(o => {
         o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); });
@@ -1530,6 +2538,12 @@
       });
       document.getElementById('regPass').addEventListener('keydown', e => {
         if (e.key === 'Enter') handleReg();
+      });
+      document.getElementById('forgotEmail').addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleForgot();
+      });
+      document.getElementById('resetPass').addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleReset();
       });
 
       // Auto-login

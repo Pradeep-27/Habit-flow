@@ -472,6 +472,24 @@ app.put('/api/habits/:id', authenticateToken, (req, res) => {
   res.json(updated);
 });
 
+app.delete('/api/habits/reset-all', authenticateToken, (req, res) => {
+  const habits = db.prepare('SELECT id FROM habits WHERE user_id = ?').all(req.user.id);
+  const ids = habits.map(h => h.id);
+
+  const deleteHabitStmt = db.prepare('DELETE FROM habits WHERE id = ?');
+  const deleteTracksStmt = db.prepare('DELETE FROM habit_tracks WHERE habit_id = ?');
+
+  const tx = db.transaction(() => {
+    for (const id of ids) {
+      deleteTracksStmt.run(id);
+      deleteHabitStmt.run(id);
+    }
+  });
+
+  tx();
+  res.json({ message: `Reset complete. ${ids.length} habit(s) deleted.` });
+});
+
 app.delete('/api/habits/:id', authenticateToken, (req, res) => {
   const habit = db.prepare('SELECT * FROM habits WHERE id = ? AND user_id = ?').get(req.params.id, req.user.id);
   if (!habit) return res.status(404).json({ error: 'Habit not found' });

@@ -63,39 +63,83 @@
 
     .bg-orb {
       position: absolute; border-radius: 50%;
-      filter: blur(120px); opacity: 0.2;
-      animation: orbFloat 25s ease-in-out infinite;
+      filter: blur(120px); opacity: 0.25;
+      animation: orbFloat 20s ease-in-out infinite;
+      will-change: transform;
     }
     .bg-orb:nth-child(1) {
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, #6366f1, #8b5cf6);
-      top: -15%; left: -10%;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, #6366f1, #8b5cf6, transparent);
+      top: -20%; left: -15%;
       animation-delay: 0s;
+      animation-duration: 22s;
     }
     .bg-orb:nth-child(2) {
-      width: 550px; height: 550px;
-      background: radial-gradient(circle, #ec4899, #f43f5e);
-      bottom: -10%; right: -8%;
-      animation-delay: -7s;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #ec4899, #f43f5e, transparent);
+      bottom: -15%; right: -10%;
+      animation-delay: -5s;
+      animation-duration: 18s;
     }
     .bg-orb:nth-child(3) {
-      width: 450px; height: 450px;
-      background: radial-gradient(circle, #06b6d4, #3b82f6);
-      top: 45%; left: 55%;
-      animation-delay: -14s;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #06b6d4, #3b82f6, transparent);
+      top: 40%; left: 50%;
+      animation-delay: -10s;
+      animation-duration: 25s;
     }
     .bg-orb:nth-child(4) {
-      width: 380px; height: 380px;
-      background: radial-gradient(circle, #f59e0b, #f97316);
-      top: 75%; left: 5%;
-      animation-delay: -21s;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, #f59e0b, #f97316, transparent);
+      top: 70%; left: 5%;
+      animation-delay: -15s;
+      animation-duration: 20s;
+    }
+    .bg-orb:nth-child(5) {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, #22c55e, #14b8a6, transparent);
+      top: 10%; right: 5%;
+      animation-delay: -8s;
+      animation-duration: 16s;
+      opacity: 0.15;
+    }
+    .bg-orb:nth-child(6) {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, #a78bfa, #6366f1, transparent);
+      bottom: 30%; left: 30%;
+      animation-delay: -3s;
+      animation-duration: 14s;
+      opacity: 0.12;
     }
 
     @keyframes orbFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      25% { transform: translate(120px, -60px) scale(1.15); }
-      50% { transform: translate(-60px, 80px) scale(0.9); }
-      75% { transform: translate(70px, 40px) scale(1.08); }
+      0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      20% { transform: translate(100px, -80px) scale(1.2) rotate(5deg); }
+      40% { transform: translate(-50px, 60px) scale(0.9) rotate(-3deg); }
+      60% { transform: translate(80px, 30px) scale(1.1) rotate(4deg); }
+      80% { transform: translate(-30px, -50px) scale(0.95) rotate(-2deg); }
+    }
+
+    /* Ambient light sweep */
+    .bg-layer::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 30%, rgba(99,102,241,0.04) 50%, transparent 70%);
+      animation: lightSweep 12s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes lightSweep {
+      0%, 100% { transform: translateX(-100%) rotate(15deg); }
+      50% { transform: translateX(100%) rotate(15deg); }
+    }
+
+    /* Subtle vignette overlay */
+    .bg-layer::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%);
+      pointer-events: none;
+      z-index: 1;
     }
 
     /* Canvas for particles */
@@ -306,6 +350,35 @@
     /* ─── Forgot Password ────────────────────────────────────────────── */
     .forgot-link { font-size: 12px; color: var(--text-muted); cursor: pointer; text-align: right; margin-top: 2px; display: block; }
     .forgot-link:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    /* ─── Password Toggle ────────────────────────────────────────────── */
+    .pw-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .pw-wrap input {
+      padding-right: 44px !important;
+    }
+    .pw-toggle {
+      position: absolute;
+      right: 4px;
+      width: 36px; height: 36px;
+      border: none; border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      opacity: 0.5;
+    }
+    .pw-toggle:hover {
+      background: rgba(255,255,255,0.1);
+      opacity: 1;
+    }
+    .pw-toggle.visible { opacity: 1; }
 
     /* ─── Settings Modal ─────────────────────────────────────────────── */
     .theme-options {
@@ -867,6 +940,13 @@
       100% { background-position: 200% 0; }
     }
 
+    /* ─── Dashboard orb calm mode ──────────────────────────────────── */
+    body.dash-visible .bg-layer .bg-orb {
+      animation-duration: 35s;
+      opacity: 0.12;
+      filter: blur(140px);
+    }
+
     /* ─── Responsive ───────────────────────────────────────────────── */
     @media (max-width: 900px) {
       .charts-row { grid-template-columns: 1fr 1fr; }
@@ -927,12 +1007,15 @@
       <!-- Login -->
       <div id="loginForm">
         <div class="form-group">
-          <label>Email</label>
+          <label>📧 Email</label>
           <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+          <label>🔒 Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+            <button class="pw-toggle" onclick="togglePw('loginPassword', this)" tabindex="-1" type="button">👁️</button>
+          </div>
           <span class="forgot-link" onclick="showForgot()">Forgot password?</span>
         </div>
         <div class="error-msg" id="loginError"></div>
@@ -947,16 +1030,23 @@
 
       <!-- Forgot Password -->
       <div id="forgotForm" style="display:none">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+          <button onclick="showLogin()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:20px;padding:0;" title="Back">←</button>
+          <h3 style="font-size:17px;font-weight:600;margin:0;">🔑 Reset Password</h3>
+        </div>
         <div class="form-group">
-          <label>Email Address</label>
+          <label>📧 Email Address</label>
           <input type="email" id="forgotEmail" placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="form-group" id="resetGroup" style="display:none">
-          <label>New Password</label>
-          <input type="password" id="resetPass" placeholder="•••••••• (min 6 chars)">
+          <label>🔒 New Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="resetPass" placeholder="•••••••• (min 6 chars)">
+            <button class="pw-toggle" onclick="togglePw('resetPass', this)" tabindex="-1" type="button">👁️</button>
+          </div>
         </div>
         <div class="error-msg" id="forgotError"></div>
-        <div class="error-msg" id="forgotSuccess" style="color:var(--success);opacity:1"></div>
+        <div class="error-msg" id="forgotSuccess" style="color:var(--success);opacity:1;display:none"></div>
         <button class="btn btn-primary" id="forgotBtn" onclick="handleForgot()">
           <span id="forgotBtnTxt">Send Reset Link</span>
           <div class="spinner" id="forgotSpin" style="display:none"></div>
@@ -973,16 +1063,19 @@
       <!-- Register -->
       <div id="regForm" style="display:none">
         <div class="form-group">
-          <label>Username</label>
+          <label>👤 Username</label>
           <input type="text" id="regUser" placeholder="yourname" autocomplete="username">
         </div>
         <div class="form-group">
-          <label>Email</label>
+          <label>📧 Email</label>
           <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="regPass" placeholder="•••••••• (min 6 chars)" autocomplete="new-password">
+          <label>🔒 Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="regPass" placeholder="•••••••• (min 6 chars)" autocomplete="new-password">
+            <button class="pw-toggle" onclick="togglePw('regPass', this)" tabindex="-1" type="button">👁️</button>
+          </div>
         </div>
         <div class="error-msg" id="regError"></div>
         <button class="btn btn-primary" id="regBtn" onclick="handleReg()">
@@ -1058,7 +1151,11 @@
     <!-- Habits -->
     <div class="sect-head">
       <h3>✨ Your Habits</h3>
-      <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ New Habit</button>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ New Habit</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportPdf()" title="Export to PDF">📄 Export</button>
+        <button class="btn btn-ghost btn-sm" onclick="openResetModal()" title="Reset All" style="color:var(--danger)">🗑️ Reset</button>
+      </div>
     </div>
     <div id="habitsC">
       <div class="skeleton"></div>
@@ -1143,7 +1240,7 @@
       </div>
       <h4 style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.5px;">🎨 Accent Color</h4>
       <div style="display:flex;gap:6px;flex-wrap:wrap;" id="accentColorPicker">
-        <button data-accent="#6366f1" style="width:32px;height:32px;border-radius:50%;background:#6366f1;border:3px solid transparent;cursor:pointer;transition:var(--transition);" class="acc-sel"></button>
+        <button data-accent="#6366f1" style="width:32px;height:32px;border-radius:50%;background:#6366f1;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
         <button data-accent="#ec4899" style="width:32px;height:32px;border-radius:50%;background:#ec4899;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
         <button data-accent="#22c55e" style="width:32px;height:32px;border-radius:50%;background:#22c55e;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
         <button data-accent="#f59e0b" style="width:32px;height:32px;border-radius:50%;background:#f59e0b;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
@@ -1305,6 +1402,22 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Reset All Confirmation Modal ──────────────────────────────── -->
+  <div class="modal-overlay" id="resetModal">
+    <div class="glass modal" style="max-width:380px;text-align:center">
+      <div style="font-size:48px;margin-bottom:10px;">⚠️</div>
+      <h3 style="margin-bottom:6px;">Reset All Habits?</h3>
+      <p style="color:var(--text-secondary);font-size:14px;margin-bottom:18px;">
+        This will permanently delete <strong>all</strong> your habits, check-ins, and progress.<br>
+        <span style="color:var(--danger);">This cannot be undone!</span>
+      </p>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="closeModal('resetModal')">Cancel</button>
+        <button class="btn btn-danger" onclick="resetAll()">🗑️ Yes, Reset Everything</button>
       </div>
     </div>
   </div>
@@ -1634,8 +1747,17 @@
     function handleLogout() {
       token = null; user = null;
       localStorage.removeItem('token'); localStorage.removeItem('user');
+      document.body.classList.remove('dash-visible');
+      // Clear form fields
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('regUser').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regPass').value = '';
+      // Show login form
       document.getElementById('dash').classList.remove('active');
       document.getElementById('authPage').style.display = 'flex';
+      showLogin();
       // Destroy charts
       if (pieChartInst) { pieChartInst.destroy(); pieChartInst = null; }
       if (barChartInst) { barChartInst.destroy(); barChartInst = null; }
@@ -1649,6 +1771,7 @@
     function loadDash() {
       document.getElementById('authPage').style.display = 'none';
       document.getElementById('dash').classList.add('active');
+      document.body.classList.add('dash-visible');
       const stored = localStorage.getItem('user');
       if (stored) user = JSON.parse(stored);
       document.getElementById('dispUser').textContent = `Hello, ${user.username}!`;
@@ -2016,6 +2139,11 @@
       const name = document.getElementById('hName').value.trim();
       if (!name) return toast('Please enter a habit name', 'error');
       const editId = document.getElementById('editHabitId').value;
+
+      // ── Duplicate prevention ──
+      const existing = habits.find(h => h.name.toLowerCase() === name.toLowerCase() && (!editId || h.id !== parseInt(editId)));
+      if (existing) return toast('⚠️ A habit with this name already exists!', 'error');
+
       const body = { name, description: document.getElementById('hDesc').value.trim(), icon: selIcon, color: selColor };
 
       try {
@@ -2172,6 +2300,17 @@
         toast(d.message, 'success');
         renderAdminPage();
       } catch (e) { toast(e.message, 'error'); }
+    }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  PASSWORD TOGGLE
+    // ═════════════════════════════════════════════════════════════════
+    function togglePw(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isPw = input.type === 'password';
+      input.type = isPw ? 'text' : 'password';
+      btn.textContent = isPw ? '🙈' : '👁️';
+      btn.classList.toggle('visible', isPw);
     }
 
     // ═════════════════════════════════════════════════════════════════
@@ -2452,6 +2591,198 @@
         });
 
       } catch (e) { toast('Failed to load charts', 'error'); }
+    }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  RESET ALL
+    // ═════════════════════════════════════════════════════════════════
+    function openResetModal() { openModal('resetModal'); }
+
+    async function resetAll() {
+      closeModal('resetModal');
+      try {
+        const r = await fetch(API + '/habits/reset-all', {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        toast(d.message + ' ✨', 'success');
+        fetchHabits();
+      } catch (e) { toast('Reset failed: ' + e.message, 'error'); }
+    }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  EXPORT TO PDF
+    // ═════════════════════════════════════════════════════════════════
+    async function exportPdf() {
+      if (!token) return toast('Please sign in first', 'error');
+
+      // Open window BEFORE async work to avoid popup blocker
+      const printWin = window.open('', '_blank');
+      if (!printWin) return toast('Please allow popups for this site', 'error');
+
+      try {
+        // Capture chart canvases as images before fetching new data
+        const pieURL = document.getElementById('pieChart')?.toDataURL('image/png') || '';
+        const barURL = document.getElementById('barChart')?.toDataURL('image/png') || '';
+        const doughURL = document.getElementById('doughnutChart')?.toDataURL('image/png') || '';
+
+        const [sRes, tRes] = await Promise.all([
+          fetch(API + '/stats', { headers: { 'Authorization': 'Bearer ' + token } }),
+          fetch(API + '/tracks/range?start=' + new Date().getFullYear() + '-01-01&end=' + new Date().getFullYear() + '-12-31', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          })
+        ]);
+        const stats = await sRes.json();
+        const tracks = await tRes.json();
+
+        // Build report data
+        const totalHabits = stats.length;
+        const totalTracks = tracks.length;
+        const now = new Date();
+        const monthLabel = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+        const thisMonth = tracks.filter(t => t.date.startsWith(now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0'))).length;
+        const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        const monthPct = totalHabits > 0 ? Math.round((thisMonth / (totalHabits * Math.min(now.getDate(), daysInMonth))) * 100) : 0;
+        const bestStreak = Math.max(...stats.map(h => h.currentStreak), 0);
+
+        // Build habits table HTML
+        let habitsHtml = '';
+        stats.forEach(h => {
+          habitsHtml += `<tr>
+            <td>${h.icon} ${h.name}</td>
+            <td style="text-align:center">${h.totalTracks}</td>
+            <td style="text-align:center">${h.monthCount}</td>
+            <td style="text-align:center">🔥 ${h.currentStreak}</td>
+          </tr>`;
+        });
+
+        // Generate monthly activity bars
+        let monthBars = '';
+        const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        for (let m = 0; m < 12; m++) {
+          const pfx = now.getFullYear() + '-' + String(m + 1).padStart(2, '0');
+          const count = tracks.filter(t => t.date.startsWith(pfx)).length;
+          const maxC = Math.max(1, ...Array.from({length:12}, (_,i) =>
+            tracks.filter(t => t.date.startsWith(now.getFullYear() + '-' + String(i+1).padStart(2,'0'))).length
+          ));
+          const pct = Math.min(100, (count / maxC) * 100);
+          monthBars += `<div style="margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+            <span style="width:30px;font-size:10px;color:#888;text-align:right;">${monthNames[m]}</span>
+            <div style="flex:1;height:14px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:3px;"></div>
+            </div>
+            <span style="width:24px;font-size:10px;color:#aaa;text-align:right;">${count}</span>
+          </div>`;
+        }
+
+        // Build printable report HTML
+        const reportHtml = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Habit Flow — Report</title>
+            <style>
+              @page { margin: 20mm; }
+              * { margin:0; padding:0; box-sizing:border-box; }
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                background: #0a0a1a; color: #e0e0e0; padding: 20px;
+              }
+              .header { text-align:center; margin-bottom:24px; }
+              .header h1 { font-size:28px; background:linear-gradient(135deg,#a78bfa,#f472b6);
+                -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+              .header .date { color:#888; font-size:13px; margin-top:4px; }
+              .stats-row { display:flex; gap:10px; margin-bottom:20px; justify-content:center; }
+              .stat-card {
+                flex:1; padding:14px; text-align:center;
+                background:rgba(255,255,255,0.04); border-radius:10px;
+                border:1px solid rgba(255,255,255,0.08);
+              }
+              .stat-card .num { font-size:26px; font-weight:700; color:#a78bfa; }
+              .stat-card .lbl { font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
+              h2 { font-size:15px; font-weight:600; color:#ccc; margin:16px 0 8px; text-transform:uppercase; letter-spacing:0.5px; }
+              table { width:100%; border-collapse:collapse; margin-bottom:16px; }
+              th { text-align:left; padding:8px 10px; font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.3px; border-bottom:1px solid rgba(255,255,255,0.08); }
+              td { padding:8px 10px; font-size:13px; border-bottom:1px solid rgba(255,255,255,0.04); }
+              .footer { text-align:center; font-size:11px; color:#555; margin-top:24px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06); }
+              .pct-circle {
+                width:80px; height:80px; border-radius:50%;
+                background: conic-gradient(#22c55e ${monthPct}%, rgba(255,255,255,0.06) 0);
+                display:flex; align-items:center; justify-content:center;
+                margin:0 auto 16px;
+              }
+              .pct-circle .inner {
+                width:60px; height:60px; border-radius:50%;
+                background:#0a0a1a; display:flex; align-items:center; justify-content:center;
+                font-size:18px; font-weight:700; color:#22c55e;
+              }
+              .bar-chart-wrap { padding:8px 0; }
+              @media print {
+                body { background:#0a0a1a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <div style="font-size:40px;">🌊</div>
+              <h1>Habit Flow Report</h1>
+              <div class="date">Generated ${now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })}</div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat-card"><div class="num">${totalHabits}</div><div class="lbl">Active Habits</div></div>
+              <div class="stat-card"><div class="num">${totalTracks}</div><div class="lbl">Total Check-ins</div></div>
+              <div class="stat-card"><div class="num">${thisMonth}</div><div class="lbl">This Month</div></div>
+              <div class="stat-card"><div class="num">${monthPct}%</div><div class="lbl">Completion</div></div>
+            </div>
+
+            <h2>📊 Charts</h2>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
+              ${pieURL ? `<div style="flex:1;min-width:140px;max-width:220px;text-align:center;"><h3 style="font-size:11px;color:#888;margin-bottom:4px;">Distribution</h3><img src="${pieURL}" style="width:100%;border-radius:6px;"></div>` : ''}
+              ${barURL ? `<div style="flex:1;min-width:140px;max-width:220px;text-align:center;"><h3 style="font-size:11px;color:#888;margin-bottom:4px;">Weekly</h3><img src="${barURL}" style="width:100%;border-radius:6px;"></div>` : ''}
+              ${doughURL ? `<div style="flex:1;min-width:140px;max-width:220px;text-align:center;"><h3 style="font-size:11px;color:#888;margin-bottom:4px;">Progress</h3><img src="${doughURL}" style="width:100%;border-radius:6px;"></div>` : ''}
+            </div>
+
+            <h2>📈 Monthly Completion (${monthPct}%)</h2>
+            <div style="text-align:center;">
+              <div class="pct-circle"><div class="inner">${monthPct}%</div></div>
+            </div>
+
+            <h2>🏆 Best Streak: ${bestStreak} day(s)</h2>
+
+            <h2>🌊 Monthly Activity</h2>
+            <div class="bar-chart-wrap">${monthBars}</div>
+
+            <h2>📋 Habits Detail</h2>
+            <table>
+              <thead><tr><th>Habit</th><th>Total</th><th>This Month</th><th>Streak</th></tr></thead>
+              <tbody>${habitsHtml || '<tr><td colspan="4" style="text-align:center;color:#666;">No habits yet</td></tr>'}</tbody>
+            </table>
+
+            <div class="footer">
+              Habit Flow — Build better habits, one day at a time<br>
+              🌊 habitflow.app
+            </div>
+          </body>
+          </html>
+        `;
+
+        // Open report in new window and trigger print
+        printWin.document.write(reportHtml);
+        printWin.document.close();
+        printWin.focus();
+
+        // Wait for fonts/content to render, then print
+        setTimeout(() => {
+          printWin.print();
+        }, 800);
+
+        toast('📄 Report opened! Use Ctrl+P / Cmd+P to save as PDF.', 'success');
+
+      } catch (e) { toast('Export failed: ' + e.message, 'error'); }
     }
 
     // ─── Modal ─────────────────────────────────────────────────────

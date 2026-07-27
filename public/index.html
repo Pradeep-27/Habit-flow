@@ -330,23 +330,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* ─── Admin Badge ────────────────────────────────────────────────── */
-    .admin-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
-      border: 1px solid rgba(245,158,11,0.25);
-      padding: 6px 12px; border-radius: 20px;
-      font-size: 11px; color: #f59e0b;
-      margin-bottom: 12px; cursor: default;
-    }
-    .admin-badge .creds {
-      font-family: monospace;
-      background: rgba(0,0,0,0.3);
-      padding: 1px 6px; border-radius: 4px;
-      font-size: 11px;
-      color: #fbbf24;
-    }
-
     /* ─── Forgot Password ────────────────────────────────────────────── */
     .forgot-link { font-size: 12px; color: var(--text-muted); cursor: pointer; text-align: right; margin-top: 2px; display: block; }
     .forgot-link:hover { color: var(--accent-hover); text-decoration: underline; }
@@ -997,11 +980,6 @@
         <span class="icon">🌊</span>
         <h1>Habit Flow</h1>
         <p>Build better habits, one day at a time</p>
-      </div>
-
-      <!-- Admin Credentials Badge -->
-      <div class="admin-badge" id="adminBadge" style="display:none">
-        🔑 Admin: <span class="creds" id="adminCreds">admin@habitflow.com / Admin@123</span>
       </div>
 
       <!-- Login -->
@@ -2314,16 +2292,6 @@
     }
 
     // ═════════════════════════════════════════════════════════════════
-    //  ADMIN CREDENTIALS
-    // ═════════════════════════════════════════════════════════════════
-    // Admin account is seeded on server: admin@habitflow.com / Admin@123
-    function showAdminBadge() {
-      const badge = document.getElementById('adminBadge');
-      badge.style.display = 'flex';
-      badge.style.animation = 'slideUp 0.5s ease-out';
-    }
-
-    // ═════════════════════════════════════════════════════════════════
     //  FORGOT PASSWORD
     // ═════════════════════════════════════════════════════════════════
     function showForgot() {
@@ -2804,10 +2772,6 @@
       // ── Apply Saved Theme ──
       const savedTheme = getTheme();
       applyTheme(savedTheme);
-
-      // ── Admin Badge ──
-      // Show admin badge on login page with credentials hint
-      setTimeout(() => showAdminBadge(), 2700);
 
       // Icon/Color picker
       document.getElementById('iconPicker').addEventListener('click', e => {

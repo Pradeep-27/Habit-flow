@@ -260,6 +260,237 @@
     body.theme-mat .logout-btn { border-radius: 20px; }
     body.theme-mat .streak-badge { border-radius: 20px; }
 
+    /* ─── Light Mode ──────────────────────────────────────────────────── */
+    body.light-mode {
+      --bg-primary: #f0f2f6;
+      --bg-secondary: #e4e7ed;
+      --text-primary: #1a1a2e;
+      --text-secondary: rgba(26, 26, 46, 0.7);
+      --text-muted: rgba(26, 26, 46, 0.45);
+      --card-bg: rgba(255, 255, 255, 0.65);
+      --card-border: 1px solid rgba(0, 0, 0, 0.06);
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+      --accent-glow: rgba(99, 102, 241, 0.18);
+    }
+    body.light-mode .bg-orb { opacity: 0.08; filter: blur(140px); }
+    body.light-mode .bg-orb:nth-child(1) { background: radial-gradient(circle, #6366f1, #a78bfa, transparent); }
+    body.light-mode .bg-orb:nth-child(2) { background: radial-gradient(circle, #ec4899, #f472b6, transparent); }
+    body.light-mode .bg-orb:nth-child(3) { background: radial-gradient(circle, #06b6d4, #22d3ee, transparent); }
+    body.light-mode .bg-orb:nth-child(4) { background: radial-gradient(circle, #f59e0b, #fbbf24, transparent); }
+    body.light-mode .bg-layer::before {
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(255,255,255,0.6) 100%);
+    }
+    body.light-mode .grid-overlay {
+      background-image:
+        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+    }
+    body.light-mode ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
+    body.light-mode ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.18); }
+    body.light-mode .glass, body.light-mode .glass-sm, body.light-mode .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+    }
+    body.light-mode .glass-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    body.light-mode .form-group input {
+      background: rgba(255,255,255,0.7);
+      border-color: rgba(0,0,0,0.1);
+      color: var(--text-primary);
+    }
+    body.light-mode .form-group input:focus {
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+    body.light-mode .btn-ghost {
+      background: rgba(255,255,255,0.5);
+      border-color: rgba(0,0,0,0.08);
+      color: var(--text-primary);
+    }
+    body.light-mode .btn-ghost:hover { background: rgba(255,255,255,0.75); }
+    body.light-mode .logout-btn {
+      background: rgba(255,255,255,0.4);
+      border-color: rgba(0,0,0,0.08);
+      color: var(--text-secondary);
+    }
+    body.light-mode .logout-btn:hover {
+      background: rgba(239,68,68,0.08);
+    }
+    body.light-mode .pw-toggle { background: rgba(0,0,0,0.04); }
+    body.light-mode .pw-toggle:hover { background: rgba(0,0,0,0.08); }
+    body.light-mode .theme-opt {
+      border-color: rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.4);
+    }
+    body.light-mode .theme-opt:hover { background: rgba(255,255,255,0.6); }
+    body.light-mode .theme-opt.active {
+      background: rgba(99,102,241,0.06);
+    }
+    body.light-mode .skeleton {
+      background: linear-gradient(90deg,
+        rgba(0,0,0,0.03) 25%,
+        rgba(0,0,0,0.07) 50%,
+        rgba(0,0,0,0.03) 75%
+      );
+    }
+    body.light-mode .modal-overlay {
+      background: rgba(255,255,255,0.3);
+    }
+    body.light-mode .auth-card::before {
+      opacity: 0.4;
+    }
+    body.light-mode .loader-overlay {
+      background: #f0f2f6;
+    }
+    body.light-mode .loader-overlay .loader-sub { color: rgba(0,0,0,0.35); }
+    body.light-mode .icon-picker button { background: rgba(0,0,0,0.03); }
+    body.light-mode .icon-picker button:hover { background: rgba(0,0,0,0.07); }
+    body.light-mode .color-picker button.selected { border-color: #333; box-shadow: 0 0 14px rgba(0,0,0,0.15); }
+    body.light-mode .dc { background: rgba(0,0,0,0.02); }
+    body.light-mode .dc:hover { background: rgba(0,0,0,0.06); }
+    body.light-mode .dc.today { border-color: rgba(0,0,0,0.2); }
+    body.light-mode .dc.future { opacity: 0.3; }
+    body.light-mode .streak-badge { background: rgba(245,158,11,0.08); }
+    body.light-mode .spinner { border-color: rgba(0,0,0,0.15); border-top-color: var(--accent); }
+    body.light-mode .avatar { border-color: rgba(255,255,255,0.5); }
+
+    /* Light mode + Neumorphism */
+    body.theme-neu.light-mode {
+      --neu-bg: #e4e7ed;
+      --card-bg: #e4e7ed;
+      --card-shadow: 8px 8px 16px rgba(0,0,0,0.1), -8px -8px 16px rgba(255,255,255,0.7);
+    }
+    body.theme-neu.light-mode .btn-primary {
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.7);
+    }
+    body.theme-neu.light-mode .form-group input {
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.08), inset -4px -4px 8px rgba(255,255,255,0.5);
+      background: #e4e7ed;
+    }
+    body.theme-neu.light-mode .icon-picker button {
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.08), -3px -3px 6px rgba(255,255,255,0.5);
+    }
+    body.theme-neu.light-mode .color-picker button {
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.08), -3px -3px 6px rgba(255,255,255,0.5);
+    }
+    body.theme-neu.light-mode .avatar {
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.08), -3px -3px 6px rgba(255,255,255,0.5);
+    }
+    body.theme-neu.light-mode .logout-btn {
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.08), -3px -3px 6px rgba(255,255,255,0.5);
+    }
+    body.theme-neu.light-mode .btn-ghost {
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.08), -3px -3px 6px rgba(255,255,255,0.5);
+    }
+
+    /* Light mode + Material Design */
+    body.theme-mat.light-mode {
+      --card-bg: #ffffff;
+      --mat-surface: #ffffff;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+    }
+    body.theme-mat.light-mode .form-group input {
+      background: rgba(255,255,255,0.7);
+      border-bottom-color: rgba(0,0,0,0.08);
+    }
+    body.theme-mat.light-mode .btn-primary {
+      box-shadow: 0 2px 8px rgba(99,102,241,0.2);
+    }
+
+    /* ─── Dark/Light Toggle Button ─────────────────────────────────── */
+    .mode-toggle {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+      position: relative;
+    }
+    .mode-toggle:hover {
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.08);
+    }
+    .mode-toggle .tooltip {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%; transform: translateX(-50%);
+      font-size: 11px; font-weight: 500;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .mode-toggle:hover .tooltip { opacity: 1; }
+    body.light-mode .mode-toggle {
+      background: rgba(255,255,255,0.5);
+      border-color: rgba(0,0,0,0.08);
+    }
+    body.light-mode .mode-toggle:hover {
+      background: rgba(255,255,255,0.8);
+    }
+    body.light-mode .mode-toggle .tooltip {
+      background: rgba(0,0,0,0.85);
+    }
+
+    /* ─── Settings: Dark/Light Toggle ─────────────────────────────── */
+    .mode-section {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0;
+      margin: 12px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    body.light-mode .mode-section {
+      border-color: rgba(0,0,0,0.06);
+    }
+    .mode-section .ms-label {
+      display: flex; flex-direction: column;
+    }
+    .mode-section .ms-label span:first-child {
+      font-size: 15px; font-weight: 500;
+    }
+    .mode-section .ms-label span:last-child {
+      font-size: 12px; color: var(--text-muted);
+    }
+    .mode-switch {
+      position: relative;
+      width: 52px; height: 28px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .mode-switch.active { background: var(--accent); }
+    .mode-switch .ms-knob {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+    .mode-switch.active .ms-knob {
+      left: 27px;
+    }
+    body.light-mode .mode-switch { background: rgba(0,0,0,0.08); }
+    body.light-mode .mode-switch.active { background: var(--accent); }
+
     /* ─── Loading Animation ──────────────────────────────────────────── */
     .loader-overlay {
       position: fixed; inset: 0; z-index: 9999;
@@ -1077,6 +1308,10 @@
         <div class="avatar" id="userAv">U</div>
         <button class="logout-btn" onclick="openChartsPage()" title="Crazy Charts 🌟" style="font-size:18px;padding:7px 12px;">📊</button>
         <button class="logout-btn" onclick="openAdminPage()" title="Admin Panel" id="adminBtn" style="font-size:18px;padding:7px 12px;display:none;">🛡️</button>
+        <button class="mode-toggle" id="modeToggleBtn" onclick="toggleMode()" title="Toggle Dark/Light Mode">
+          <span id="modeToggleIcon">☀️</span>
+          <span class="tooltip">Toggle Dark/Light</span>
+        </button>
         <button class="logout-btn" onclick="openSettingsModal()" title="Theme Settings" style="font-size:18px;padding:7px 12px;">⚙️</button>
         <button class="logout-btn" onclick="handleLogout()">✕ Sign Out</button>
       </div>
@@ -1229,6 +1464,14 @@
         <button data-accent="#14b8a6" style="width:32px;height:32px;border-radius:50%;background:#14b8a6;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
         <button data-accent="#e11d48" style="width:32px;height:32px;border-radius:50%;background:#e11d48;border:3px solid transparent;cursor:pointer;transition:var(--transition);"></button>
       </div>
+      <div class="mode-section">
+        <div class="ms-label">
+          <span>☀️ Dark / Light</span>
+          <span id="modeLabel">Switch to light mode</span>
+        </div>
+        <div class="mode-switch" id="modeSwitch" onclick="toggleMode()">
+          <div class="ms-knob" id="modeKnob">🌙</div>
+        </div>
       </div>
       <div class="btn-row">
         <button class="btn btn-ghost" onclick="closeModal('settingsModal')">Done</button>
@@ -2369,6 +2612,32 @@
     //  THEME SWITCHER
     // ═════════════════════════════════════════════════════════════════
     function getTheme() { return localStorage.getItem('theme') || 'glass'; }
+    function getMode() { return localStorage.getItem('mode') || 'dark'; }
+
+    function applyMode(mode) {
+      const isLight = mode === 'light';
+      document.body.classList.toggle('light-mode', isLight);
+      localStorage.setItem('mode', mode);
+
+      // Update topbar toggle icon
+      const icon = document.getElementById('modeToggleIcon');
+      if (icon) icon.textContent = isLight ? '🌙' : '☀️';
+
+      // Update settings toggle
+      const sw = document.getElementById('modeSwitch');
+      const knob = document.getElementById('modeKnob');
+      const label = document.getElementById('modeLabel');
+      if (sw) sw.classList.toggle('active', isLight);
+      if (knob) knob.textContent = isLight ? '☀️' : '🌙';
+      if (label) label.textContent = isLight ? '☀️ Light mode — easy on the eyes' : '🌙 Dark mode — easy on the eyes';
+    }
+
+    function toggleMode() {
+      const current = getMode();
+      const newMode = current === 'dark' ? 'light' : 'dark';
+      applyMode(newMode);
+      toast(newMode === 'light' ? '☀️ Light mode activated' : '🌙 Dark mode activated', 'info');
+    }
 
     function applyTheme(theme) {
       document.body.classList.remove('theme-neu', 'theme-mat', 'theme-glass');
@@ -2377,6 +2646,8 @@
       document.querySelectorAll('.theme-opt').forEach(el => {
         el.classList.toggle('active', el.dataset.theme === theme);
       });
+      // Re-apply mode to ensure light-mode overrides still work
+      applyMode(getMode());
     }
 
     function selectTheme(theme) {
@@ -2769,9 +3040,10 @@
         initParticles();
       }, 2500);
 
-      // ── Apply Saved Theme ──
+      // ── Apply Saved Theme & Mode ──
       const savedTheme = getTheme();
       applyTheme(savedTheme);
+      applyMode(getMode());
 
       // Icon/Color picker
       document.getElementById('iconPicker').addEventListener('click', e => {

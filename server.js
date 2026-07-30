@@ -7,6 +7,15 @@ const net = require('net');
 const Database = require('better-sqlite3');
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
+// ─── Load .env ──────────────────────────────────────────────────────────────
+try {
+  require('dotenv').config();
+} catch (e) {
+  // dotenv not installed — env vars must be set manually
+}
+
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
+
 // ─── Database Setup ───────────────────────────────────────────────────────────
 const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, 'data.db');
 const db = new Database(DB_PATH);
@@ -166,7 +175,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'habit-tracker-secret-key-change-in-production';
 
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -200,29 +209,6 @@ function requireAdmin(req, res, next) {
 }
 
 // ─── Auth Routes ──────────────────────────────────────────────────────────────
-// ─── Forgot Password ─────────────────────────────────────────────────────────
-app.post('/api/auth/forgot-password', async (req, res) => {
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ error: 'Email is required' });
-
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-  if (!user) {
-    // Return success anyway to prevent email enumeration
-    return res.json({ message: 'If that email exists, a reset link has been generated.', token: null });
-  }
-
-  const token = crypto.randomBytes(32).toString('hex');
-  const expires = new Date(Date.now() + 3600000).toISOString(); // 1 hour
-
-  db.prepare('INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)')
-    .run(user.id, token, expires);
-
-  // In production, send this via email. Here we return it for demo purposes.
-  res.json({
-    message: 'Password reset link generated. Check your email.',
-    token: token // In production, remove this and send via email
-  });
-});
 
 app.post('/api/auth/reset-password', async (req, res) => {
   const { token, newPassword } = req.body;
@@ -240,38 +226,6 @@ app.post('/api/auth/reset-password', async (req, res) => {
   db.prepare('UPDATE password_reset_tokens SET used = 1 WHERE id = ?').run(resetToken.id);
 
   res.json({ message: 'Password reset successful! You can now sign in.' });
-});
-
-app.post('/api/auth/register', async (req, res) => {
-  try {
-    await authLimiter.consume(req.ip);
-  } catch {
-    return res.status(429).json({ error: 'Too many requests. Try again later.' });
-  }
-
-  const { username, email, password } = req.body;
-
-  if (!username || !email || !password) {
-    return res.status(400).json({ error: 'Username, email, and password are required' });
-  }
-
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters' });
-  }
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const stmt = db.prepare('INSERT INTO users (username, email, password) VALUES (?, ?, ?)');
-    const result = stmt.run(username, email, hashedPassword);
-
-    const token = jwt.sign({ id: result.lastInsertRowid, username }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: result.lastInsertRowid, username, email } });
-  } catch (err) {
-    if (err.message.includes('UNIQUE constraint')) {
-      return res.status(409).json({ error: 'Username or email already exists' });
-    }
-    return res.status(500).json({ error: 'Registration failed' });
-  }
 });
 
 app.post('/api/auth/login', async (req, res) => {
@@ -348,8 +302,14 @@ app.post('/api/auth/login', async (req, res) => {
   });
 });
 
-// ─── Update forgot-password to send email ─────────────────────────────────────
+// ─── Forgot Password (with email) ────────────────────────────────────────────
 app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    await authLimiter.consume(req.ip);
+  } catch {
+    return res.status(429).json({ error: 'Too many requests. Try again later.' });
+  }
+
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required' });
 
@@ -392,10 +352,10 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
   sendEmail(email, 'Habit Flow — Password Reset', htmlBody);
 
-  // Also return token for demo (frontend uses this for inline reset)
+  // Guard: only return token in DEMO_MODE (frontend needs it for inline reset)
   res.json({
     message: 'Password reset link sent to your email.',
-    token: token,
+    ...(DEMO_MODE ? { token } : {}),
     email_sent: true
   });
 });
@@ -606,19 +566,51 @@ app.put('/api/admin/users/:id/unlock', authenticateToken, requireAdmin, (req, re
   res.json({ message: `User "${user.username}" unlocked` });
 });
 
-// ─── User Stats ───────────────────────────────────────────────────────────────
+// ─── User Stats (optimized with GROUP BY) ──────────────────────────────────────
 app.get('/api/stats', authenticateToken, (req, res) => {
   const habits = db.prepare('SELECT id, name, color, icon FROM habits WHERE user_id = ?').all(req.user.id);
-  const habitIds = habits.map(h => h.id);
+  if (habits.length === 0) return res.json([]);
 
+  const habitIds = habits.map(h => h.id);
+  const placeholders = habitIds.map(() => '?').join(',');
+
+  // Single GROUP BY query for total counts (replaces N queries)
+  const totalCounts = db.prepare(
+    `SELECT habit_id, COUNT(*) as count FROM habit_tracks WHERE habit_id IN (${placeholders}) GROUP BY habit_id`
+  ).all(...habitIds);
+  const totalMap = Object.fromEntries(totalCounts.map(r => [r.habit_id, r.count]));
+
+  // Single GROUP BY query for current month counts (replaces N queries)
+  const now = new Date();
+  const monthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const monthCounts = db.prepare(
+    `SELECT habit_id, COUNT(*) as count FROM habit_tracks WHERE habit_id IN (${placeholders}) AND date LIKE ? GROUP BY habit_id`
+  ).all(...habitIds, `${monthPrefix}%`);
+  const monthMap = Object.fromEntries(monthCounts.map(r => [r.habit_id, r.count]));
+
+  // Single query for all dates (replaces N date queries)
+  const allDates = db.prepare(
+    `SELECT habit_id, date FROM habit_tracks WHERE habit_id IN (${placeholders}) ORDER BY habit_id, date DESC`
+  ).all(...habitIds);
+
+  // Group dates by habit_id
+  const datesByHabit = {};
+  for (const row of allDates) {
+    if (!datesByHabit[row.habit_id]) datesByHabit[row.habit_id] = [];
+    datesByHabit[row.habit_id].push(row.date);
+  }
+
+  // Calculate streaks from grouped data
+  const today = new Date();
   const stats = habits.map(habit => {
-    const total = db.prepare('SELECT COUNT(*) as count FROM habit_tracks WHERE habit_id = ?').get(habit.id).count;
-    // Current streak
-    const tracks = db.prepare('SELECT date FROM habit_tracks WHERE habit_id = ? ORDER BY date DESC').all(habit.id);
+    const total = totalMap[habit.id] || 0;
+    const monthCount = monthMap[habit.id] || 0;
+
+    // Calculate streak
+    const dates = datesByHabit[habit.id] || [];
     let streak = 0;
-    const today = new Date();
-    for (let i = 0; i < tracks.length; i++) {
-      const trackDate = new Date(tracks[i].date + 'T00:00:00');
+    for (let i = 0; i < dates.length; i++) {
+      const trackDate = new Date(dates[i] + 'T00:00:00');
       const expectedDate = new Date(today);
       expectedDate.setDate(expectedDate.getDate() - i);
       if (trackDate.toDateString() === expectedDate.toDateString()) {
@@ -627,11 +619,6 @@ app.get('/api/stats', authenticateToken, (req, res) => {
         break;
       }
     }
-
-    // Current month count
-    const now = new Date();
-    const monthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    const monthCount = db.prepare("SELECT COUNT(*) as count FROM habit_tracks WHERE habit_id = ? AND date LIKE ?").get(habit.id, `${monthPrefix}%`).count;
 
     return { ...habit, totalTracks: total, currentStreak: streak, monthCount };
   });

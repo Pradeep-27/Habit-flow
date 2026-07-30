@@ -55,6 +55,22 @@
       transition: background 0.5s ease, color 0.5s ease;
     }
 
+    /* ─── Mode Reveal Overlay ─────────────────────────────────────── */
+    .mode-reveal {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      will-change: clip-path;
+      transition: clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mode-reveal.to-light {
+      background: #0a0a1a;
+    }
+    .mode-reveal.to-dark {
+      background: #f0f2f6;
+    }
+
     /* ─── Animated Background ──────────────────────────────────────── */
     .bg-layer {
       position: fixed; inset: 0; z-index: 0;
@@ -1469,7 +1485,7 @@
           <span>☀️ Dark / Light</span>
           <span id="modeLabel">Switch to light mode</span>
         </div>
-        <div class="mode-switch" id="modeSwitch" onclick="toggleMode()">
+        <div class="mode-switch" id="modeSwitch" onclick="toggleMode(this)">
           <div class="ms-knob" id="modeKnob">🌙</div>
         </div>
       </div>
@@ -2632,10 +2648,49 @@
       if (label) label.textContent = isLight ? '☀️ Light mode — easy on the eyes' : '🌙 Dark mode — easy on the eyes';
     }
 
-    function toggleMode() {
+    function toggleMode(el) {
+      // Prevent rapid double-clicks from stacking overlays
+      if (document.querySelector('.mode-reveal')) return;
+
       const current = getMode();
       const newMode = current === 'dark' ? 'light' : 'dark';
+
+      // Get clicked element position for clip-path origin
+      const source = el || document.getElementById('modeToggleBtn');
+      let x = '50%', y = '50%';
+      if (source) {
+        const rect = source.getBoundingClientRect();
+        x = (rect.left + rect.width / 2) + 'px';
+        y = (rect.top + rect.height / 2) + 'px';
+      }
+
+      // Create the reveal overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'mode-reveal ' + (newMode === 'light' ? 'to-light' : 'to-dark');
+      overlay.style.clipPath = 'circle(0% at ' + x + ' ' + y + ')';
+      document.body.appendChild(overlay);
+
+      // Force paint before toggling mode and starting animation
+      void overlay.offsetHeight;
+
+      // Toggle the mode while hidden behind overlay
       applyMode(newMode);
+
+      // Expand the circle to reveal new mode
+      requestAnimationFrame(() => {
+        overlay.style.clipPath = 'circle(150% at ' + x + ' ' + y + ')';
+      });
+
+      // Cleanup: transitionend OR fallback timer (whichever fires first)
+      let cleaned = false;
+      function cleanOverlay() {
+        if (cleaned) return;
+        cleaned = true;
+        overlay.remove();
+      }
+      setTimeout(cleanOverlay, 900);
+      overlay.addEventListener('transitionend', cleanOverlay, { once: true });
+
       toast(newMode === 'light' ? '☀️ Light mode activated' : '🌙 Dark mode activated', 'info');
     }
 
